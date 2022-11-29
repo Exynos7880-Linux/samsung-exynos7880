@@ -29,8 +29,8 @@ jobs:
         ./build/fetch-and-prepare-latest-ota.sh "16.04/arm64/android9/devel" "$DEVICE" ota
         mkdir -p out
         ./build/system-image-from-ota.sh ota/ubuntu_command out
-        mv out/rootfs.img a7_installer/data/ubuntu.img
-        mv out/boot.img a7_installer/boot.img
+        mv out/rootfs.img a5_installer/data/ubuntu.img
+        mv out/boot.img a5_installer/boot.img
       shell: bash
     - name: upload A5 images
       uses: actions/upload-artifact@master
