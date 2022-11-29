@@ -1,0 +1,5 @@
+a5y17lte:
+  PrettyName: Samsung A5 2017
+  DeviceType: phone
+  DoubleTapToWake:
+    - /sys/class/sec/tsp/dt2w_enable|1|0
