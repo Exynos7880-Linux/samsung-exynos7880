@@ -31,7 +31,7 @@ jobs:
         ./build/system-image-from-ota.sh ota/ubuntu_command out
         mv out/rootfs.img out/ubuntu.img
       shell: bash
-    - name: upload A7 images
+    - name: upload A5 images
       uses: actions/upload-artifact@master
       with:
         name: ubuntu boot A5
