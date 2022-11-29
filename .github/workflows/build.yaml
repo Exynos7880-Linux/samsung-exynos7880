@@ -31,13 +31,14 @@ jobs:
         ./build/system-image-from-ota.sh ota/ubuntu_command out
         mv out/rootfs.img out/ubuntu.img
       shell: bash
-    - name: 
+    - name: upload A7 images
       uses: actions/upload-artifact@master
       with:
-        name: ubuntu boot
-        path: |
-          out/ubuntu.img
-          out/boot.img
+        name: ubuntu boot A5
+        path:
+          - out/ubuntu.img
+          - out/boot.img
+
   build_a7:
     runs-on: ubuntu-20.04
 
@@ -60,10 +61,10 @@ jobs:
         ./build/system-image-from-ota.sh ota/ubuntu_command out
         mv out/rootfs.img out/ubuntu.img
       shell: bash
-    - name: 
+    - name: upload A7 images
       uses: actions/upload-artifact@master
       with:
-        name: ubuntu boot
-        path: |
-          out/ubuntu.img
-          out/boot.img
+        name: ubuntu boot A7
+        path:
+          - out/ubuntu.img
+          - out/boot.img
