@@ -29,14 +29,15 @@ jobs:
         ./build/fetch-and-prepare-latest-ota.sh "16.04/arm64/android9/devel" "$DEVICE" ota
         mkdir -p out
         ./build/system-image-from-ota.sh ota/ubuntu_command out
-        mv out/rootfs.img out/ubuntu.img
+        mv out/rootfs.img a7_installer/data/ubuntu.img
+        mv out/boot.img a7_installer/boot.img
       shell: bash
     - name: upload A5 images
       uses: actions/upload-artifact@master
       with:
-        name: ubuntu boot A5
+        name: ubports-a5y17lte-rc-`date +%Y%m%d`
         path: |
-          out/*.img
+          a5_installer/*
 
   build_a7:
     runs-on: ubuntu-20.04
@@ -58,12 +59,13 @@ jobs:
         ./build/fetch-and-prepare-latest-ota.sh "16.04/arm64/android9/devel" "$DEVICE" ota
         mkdir -p out
         ./build/system-image-from-ota.sh ota/ubuntu_command out
-        mv out/rootfs.img out/ubuntu.img
+        mv out/rootfs.img a7_installer/data/ubuntu.img
+        mv out/boot.img a7_installer/boot.img
       shell: bash
     - name: upload A7 images
       uses: actions/upload-artifact@master
       with:
-        name: ubuntu boot A7
+        name: ubports-a7y17lte-rc-`date +%Y%m%d`
         path: |
-          out/*.img
+          a7_installer/*
 
