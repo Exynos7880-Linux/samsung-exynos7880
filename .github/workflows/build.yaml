@@ -35,7 +35,7 @@ jobs:
     - name: upload A5 images
       uses: actions/upload-artifact@master
       with:
-        name: ubports-a5y17lte-rc-`date +%Y%m%d`
+        name: ubports-a5y17lte-rc
         path: |
           a5_installer/*
 
@@ -65,7 +65,7 @@ jobs:
     - name: upload A7 images
       uses: actions/upload-artifact@master
       with:
-        name: ubports-a7y17lte-rc-`date +%Y%m%d`
+        name: ubports-a7y17lte-rc
         path: |
           a7_installer/*
 
