@@ -19,7 +19,7 @@ jobs:
     - name: Build A5
       run: |
         sudo apt-get update
-        sudo apt install android-tools-mkbootimg jq img2simg bc bison \
+        sudo apt install android-tools-mkbootimg jq ccache img2simg bc bison \
         build-essential ca-certificates cpio curl flex git kmod \
         libssl-dev libtinfo5 python2 sudo unzip wget xz-utils -y --no-install-recommends
         sudo ln -sf python2.7 /usr/bin/python
@@ -48,7 +48,7 @@ jobs:
     - name: Build A7
       run: |
         sudo apt-get update
-        sudo apt install android-tools-mkbootimg jq img2simg bc bison \
+        sudo apt install android-tools-mkbootimg jq ccache img2simg bc bison \
         build-essential ca-certificates cpio curl flex git kmod \
         libssl-dev libtinfo5 python2 sudo unzip wget xz-utils -y --no-install-recommends
         sudo ln -sf python2.7 /usr/bin/python
