@@ -26,7 +26,7 @@ jobs:
         ln -s deviceinfo-a5y17lte deviceinfo
         ./build.sh
         DEVICE="$(source deviceinfo && echo $deviceinfo_codename)"
-        ./build/fetch-and-prepare-latest-ota.sh "16.04/arm64/android9/devel" "$DEVICE" ota
+        ./build/prepare-fake-ota.sh out/device_a5y17lte.tar.xz ota
         mkdir -p out
         ./build/system-image-from-ota.sh ota/ubuntu_command out
         mv out/rootfs.img a5_installer/data/ubuntu.img
@@ -56,7 +56,7 @@ jobs:
         ln -s deviceinfo-a7y17lte deviceinfo
         ./build.sh
         DEVICE="$(source deviceinfo && echo $deviceinfo_codename)"
-        ./build/fetch-and-prepare-latest-ota.sh "16.04/arm64/android9/devel" "$DEVICE" ota
+        ./build/prepare-fake-ota.sh out/device_a7y17lte.tar.xz ota
         mkdir -p out
         ./build/system-image-from-ota.sh ota/ubuntu_command out
         mv out/rootfs.img a7_installer/data/ubuntu.img
