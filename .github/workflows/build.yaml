@@ -31,13 +31,24 @@ jobs:
         ./build/system-image-from-ota.sh ota/ubuntu_command out
         mv out/rootfs.img a5_installer/data/ubuntu.img
         mv out/boot.img a5_installer/boot.img
+        wget https://sourceforge.net/projects/exynos7880/files/vendor/vendor_a5.img/download -O a5_installer/data/vendor.img
+        cd a5_installer
+        zip -r -y -9 ../ubports-a5y17lte-devel-`date +%Y%m%d`.zip .
       shell: bash
     - name: upload A5 images
       uses: actions/upload-artifact@master
       with:
-        name: ubports-a5y17lte-rc
+        name: ubports-a5y17lte-devel
         path: |
-          a5_installer/*
+          ubports-a5y17lte-*.zip
+    - uses: marvinpinto/action-automatic-releases@latest
+      with:
+        repo_token: "${{ secrets.GITHUB_TOKEN }}"
+        automatic_release_tag: "latest"
+        prerelease: true
+        title: "Development Build"
+        files: |
+          ubports-a5y17lte-*.zip
 
   build_a7:
     runs-on: ubuntu-20.04
@@ -61,11 +72,21 @@ jobs:
         ./build/system-image-from-ota.sh ota/ubuntu_command out
         mv out/rootfs.img a7_installer/data/ubuntu.img
         mv out/boot.img a7_installer/boot.img
+        wget https://sourceforge.net/projects/exynos7880/files/vendor/vendor_a7.img/download -O a7_installer/data/vendor.img
+        cd a7_installer
+        zip -r -y -9 ../ubports-a7y17lte-devel-`date +%Y%m%d`.zip .
       shell: bash
     - name: upload A7 images
       uses: actions/upload-artifact@master
       with:
-        name: ubports-a7y17lte-rc
+        name: ubports-a7y17lte-devel
         path: |
-          a7_installer/*
-
+          ubports-a7y17lte-*.zip
+    - uses: marvinpinto/action-automatic-releases@latest
+      with:
+        repo_token: "${{ secrets.GITHUB_TOKEN }}"
+        automatic_release_tag: "latest"
+        prerelease: true
+        title: "Devel Build"
+        files: |
+          ubports-a7y17lte-*.zip
