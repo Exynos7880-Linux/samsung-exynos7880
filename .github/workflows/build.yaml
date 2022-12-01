@@ -34,6 +34,7 @@ jobs:
         wget https://sourceforge.net/projects/exynos7880/files/vendor/vendor_a5.img/download -O a5_installer/data/vendor.img
         cd a5_installer
         zip -r -y -9 ../ubports-a5y17lte-devel-`date +%Y%m%d`.zip .
+        echo "::set-env name=NOW::v$(date +'%Y%m%d.%H%M%S')"
       shell: bash
     - name: upload A5 images
       uses: actions/upload-artifact@master
@@ -44,7 +45,7 @@ jobs:
     - uses: marvinpinto/action-automatic-releases@latest
       with:
         repo_token: "${{ secrets.GITHUB_TOKEN }}"
-        automatic_release_tag: "latestA5"
+        automatic_release_tag: "${{ env.NOW }}"
         prerelease: true
         title: "Development Build"
         files: |
@@ -75,6 +76,7 @@ jobs:
         wget https://sourceforge.net/projects/exynos7880/files/vendor/vendor_a7.img/download -O a7_installer/data/vendor.img
         cd a7_installer
         zip -r -y -9 ../ubports-a7y17lte-devel-`date +%Y%m%d`.zip .
+        echo "::set-env name=NOW::v$(date +'%Y%m%d.%H%M%S')"
       shell: bash
     - name: upload A7 images
       uses: actions/upload-artifact@master
@@ -85,8 +87,8 @@ jobs:
     - uses: marvinpinto/action-automatic-releases@latest
       with:
         repo_token: "${{ secrets.GITHUB_TOKEN }}"
-        automatic_release_tag: "latestA7"
+        automatic_release_tag: "${{ env.NOW }}"
         prerelease: true
-        title: "Devel Build"
+        title: "Development Build"
         files: |
           ubports-a7y17lte-*.zip
