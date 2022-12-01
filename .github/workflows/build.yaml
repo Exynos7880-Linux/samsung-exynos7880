@@ -50,6 +50,7 @@ jobs:
         title: "${{ env.NOW }}"
         files: |
           ubports-a5y17lte-*.zip
+          a5_installer/boot.img
 
   build_a7:
     runs-on: ubuntu-20.04
@@ -92,3 +93,4 @@ jobs:
         title: "${{ env.NOW }}"
         files: |
           ubports-a7y17lte-*.zip
+          a7_installer/boot.img
