@@ -34,7 +34,7 @@ jobs:
         wget https://sourceforge.net/projects/exynos7880/files/vendor/vendor_a5.img/download -O a5_installer/data/vendor.img
         cd a5_installer
         zip -r -y -9 ../ubports-a5y17lte-devel-`date +%Y%m%d`.zip .
-        echo "::set-env name=NOW::v$(date +'%Y%m%d.%H%M%S')"
+        echo "NOW=$(date +'%Y.%m.%d')" >> $GITHUB_ENV
       shell: bash
     - name: upload A5 images
       uses: actions/upload-artifact@master
@@ -47,7 +47,7 @@ jobs:
         repo_token: "${{ secrets.GITHUB_TOKEN }}"
         automatic_release_tag: "${{ env.NOW }}"
         prerelease: true
-        title: "Development Build"
+        title: "${{ env.NOW }}"
         files: |
           ubports-a5y17lte-*.zip
 
@@ -89,6 +89,6 @@ jobs:
         repo_token: "${{ secrets.GITHUB_TOKEN }}"
         automatic_release_tag: "${{ env.NOW }}"
         prerelease: true
-        title: "Development Build"
+        title: "${{ env.NOW }}"
         files: |
           ubports-a7y17lte-*.zip
