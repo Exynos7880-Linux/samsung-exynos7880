@@ -44,7 +44,7 @@ jobs:
     - uses: marvinpinto/action-automatic-releases@latest
       with:
         repo_token: "${{ secrets.GITHUB_TOKEN }}"
-        automatic_release_tag: "latest"
+        automatic_release_tag: "latestA5"
         prerelease: true
         title: "Development Build"
         files: |
@@ -85,7 +85,7 @@ jobs:
     - uses: marvinpinto/action-automatic-releases@latest
       with:
         repo_token: "${{ secrets.GITHUB_TOKEN }}"
-        automatic_release_tag: "latest"
+        automatic_release_tag: "latestA7"
         prerelease: true
         title: "Devel Build"
         files: |
