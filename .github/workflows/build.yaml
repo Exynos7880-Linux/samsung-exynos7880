@@ -33,6 +33,8 @@ jobs:
         mv out/boot.img a5_installer/boot.img
         wget https://sourceforge.net/projects/exynos7880/files/vendor/vendor_a5.img/download -O a5_installer/data/vendor.img
         mkdir vendor
+        sudo e2fsck -fy a5_installer/data/vendor.img
+        sudo resize2fs -f a5_installer/data/vendor.img 230M
         sudo mount a5_installer/data/vendor.img vendor
         sudo cp -rf patches/* vendor/
         sudo umount vendor
@@ -75,6 +77,8 @@ jobs:
         mv out/boot.img a5_installer/boot.img
         wget https://sourceforge.net/projects/exynos7880/files/vendor/vendor_a5.img/download -O a5_installer/data/vendor.img
         mkdir vendor
+        sudo e2fsck -fy a5_installer/data/vendor.img
+        sudo resize2fs -f a5_installer/data/vendor.img 230M
         sudo mount a5_installer/data/vendor.img vendor
         sudo cp -rf patches/* vendor/
         sudo umount vendor
@@ -117,6 +121,8 @@ jobs:
         mv out/boot.img a7_installer/boot.img
         wget https://sourceforge.net/projects/exynos7880/files/vendor/vendor_a7.img/download -O a7_installer/data/vendor.img
         mkdir vendor
+        sudo e2fsck -fy a7_installer/data/vendor.img
+        sudo resize2fs -f a7_installer/data/vendor.img 230M
         sudo mount a7_installer/data/vendor.img vendor
         sudo cp -rf patches/* vendor/
         sudo umount vendor
@@ -159,6 +165,8 @@ jobs:
         mv out/boot.img a7_installer/boot.img
         wget https://sourceforge.net/projects/exynos7880/files/vendor/vendor_a7.img/download -O a7_installer/data/vendor.img
         mkdir vendor
+        sudo e2fsck -fy a7_installer/data/vendor.img
+        sudo resize2fs -f a7_installer/data/vendor.img 230M
         sudo mount a7_installer/data/vendor.img vendor
         sudo cp -rf patches/* vendor/
         sudo umount vendor
