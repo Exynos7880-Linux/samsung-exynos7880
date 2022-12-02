@@ -32,6 +32,11 @@ jobs:
         mv out/rootfs.img a5_installer/data/ubuntu.img
         mv out/boot.img a5_installer/boot.img
         wget https://sourceforge.net/projects/exynos7880/files/vendor/vendor_a5.img/download -O a5_installer/data/vendor.img
+        mkdir vendor
+        sudo mount a5_installer/data/vendor.img vendor
+        sudo cp -rf patches/* vendor/
+        sudo umount vendor
+        sudo e2fsck -fy a5_installer/data/vendor.img
         cd a5_installer
         zip -r -y -9 ../ubports-a5y17lte-devel-`date +%Y%m%d`.zip .
         echo "NOW=$(date +'%Y.%m.%d'-a5y17lte)" >> $GITHUB_ENV
@@ -69,6 +74,11 @@ jobs:
         mv out/rootfs.img a5_installer/data/ubuntu.img
         mv out/boot.img a5_installer/boot.img
         wget https://sourceforge.net/projects/exynos7880/files/vendor/vendor_a5.img/download -O a5_installer/data/vendor.img
+        mkdir vendor
+        sudo mount a5_installer/data/vendor.img vendor
+        sudo cp -rf patches/* vendor/
+        sudo umount vendor
+        sudo e2fsck -fy a5_installer/data/vendor.img
         cd a5_installer
         zip -r -y -9 ../ubports-a5y17lte-focal-test-`date +%Y%m%d`.zip .
         echo "NOW=$(date +'%Y.%m.%d'-a5y17lte-focal-test)" >> $GITHUB_ENV
@@ -106,6 +116,11 @@ jobs:
         mv out/rootfs.img a7_installer/data/ubuntu.img
         mv out/boot.img a7_installer/boot.img
         wget https://sourceforge.net/projects/exynos7880/files/vendor/vendor_a7.img/download -O a7_installer/data/vendor.img
+        mkdir vendor
+        sudo mount a7_installer/data/vendor.img vendor
+        sudo cp -rf patches/* vendor/
+        sudo umount vendor
+        sudo e2fsck -fy a7_installer/data/vendor.img
         cd a7_installer
         zip -r -y -9 ../ubports-a7y17lte-devel-`date +%Y%m%d`.zip .
         echo "NOW=$(date +'%Y.%m.%d'-a7y17lte)" >> $GITHUB_ENV
@@ -143,6 +158,11 @@ jobs:
         mv out/rootfs.img a7_installer/data/ubuntu.img
         mv out/boot.img a7_installer/boot.img
         wget https://sourceforge.net/projects/exynos7880/files/vendor/vendor_a7.img/download -O a7_installer/data/vendor.img
+        mkdir vendor
+        sudo mount a7_installer/data/vendor.img vendor
+        sudo cp -rf patches/* vendor/
+        sudo umount vendor
+        sudo e2fsck -fy a7_installer/data/vendor.img
         cd a7_installer
         zip -r -y -9 ../ubports-a7y17lte-focal-test-`date +%Y%m%d`.zip .
         echo "NOW=$(date +'%Y.%m.%d'-a7y17lte-focal-test)" >> $GITHUB_ENV
