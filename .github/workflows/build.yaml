@@ -58,14 +58,14 @@ jobs:
           ubports-a5y17lte-*.zip
           a5_installer/boot.img
 
-  build_a5-stable:
+  build_a5-device:
     runs-on: ubuntu-20.04
 
     steps:
     - name: Checkout
       uses: actions/checkout@master
 
-    - name: Build A5 Stable
+    - name: Build A5 device package
       run: |
         sudo apt-get update
         sudo apt install android-tools-mkbootimg jq ccache img2simg bc bison \
@@ -74,38 +74,13 @@ jobs:
         sudo ln -sf python2.7 /usr/bin/python
         ln -s deviceinfo-a5y17lte deviceinfo
         ./build.sh
-        DEVICE="$(source deviceinfo && echo $deviceinfo_codename)"
-        ./build/prepare-fake-ota-stable.sh out/device_a5y17lte.tar.xz ota
-        mkdir -p out
-        ./build/system-image-from-ota.sh ota/ubuntu_command out
-        mv out/rootfs.img a5_installer/data/ubuntu.img
-        mv out/boot.img a5_installer/boot.img
-        mv recovery_a5y17lte.img a5_installer/recovery.img
-        wget https://sourceforge.net/projects/exynos7880/files/vendor/vendor_a5.img/download -O a5_installer/data/vendor.img
-        mkdir vendor
-        sudo e2fsck -fy a5_installer/data/vendor.img
-        sudo resize2fs -f a5_installer/data/vendor.img 230M
-        sudo mount a5_installer/data/vendor.img vendor
-        sudo cp -rf patches/* vendor/
-        sudo rm -f vendor/lib/libgui.so vendor/lib64/libgui.so
-        sudo umount vendor
-        sudo e2fsck -fy a5_installer/data/vendor.img
-        cd a5_installer
-        zip -r -y -9 ../ubports-a5y17lte-stable-`date +%Y%m%d`.zip .
-        sed -i '24d' META-INF/com/google/android/updater-script
-        rm recovery.img
-        zip -r -y -9 ../ubports-a5y17lte-stable-norecovery-`date +%Y%m%d`.zip .
-        echo "NOW=$(date +'%Y.%m.%d'-a5y17lte-stable)" >> $GITHUB_ENV
+        mv recovery_a5y17lte.img out/recovery.img
       shell: bash
-    - uses: marvinpinto/action-automatic-releases@latest
+    - uses: actions/upload-artifact@master
       with:
-        repo_token: "${{ secrets.GITHUB_TOKEN }}"
-        automatic_release_tag: "${{ env.NOW }}"
-        prerelease: false
-        title: "${{ env.NOW }}"
-        files: |
-          ubports-a5y17lte-*.zip
-          a5_installer/boot.img
+        name: device_a5y17lte
+        path: |
+          out/*
 
   build_a7:
     runs-on: ubuntu-20.04
@@ -156,14 +131,14 @@ jobs:
           ubports-a7y17lte-*.zip
           a7_installer/boot.img
           
-  build_a7-stable:
+  build_a7-device:
     runs-on: ubuntu-20.04
 
     steps:
     - name: Checkout
       uses: actions/checkout@master
 
-    - name: Build A7 Stable
+    - name: Build A7 device package
       run: |
         sudo apt-get update
         sudo apt install android-tools-mkbootimg jq ccache img2simg bc bison \
@@ -172,35 +147,10 @@ jobs:
         sudo ln -sf python2.7 /usr/bin/python
         ln -s deviceinfo-a7y17lte deviceinfo
         ./build.sh
-        DEVICE="$(source deviceinfo && echo $deviceinfo_codename)"
-        ./build/prepare-fake-ota-stable.sh out/device_a7y17lte.tar.xz ota
-        mkdir -p out
-        ./build/system-image-from-ota.sh ota/ubuntu_command out
-        mv out/rootfs.img a7_installer/data/ubuntu.img
-        mv out/boot.img a7_installer/boot.img
-        mv recovery_a7y17lte.img a7_installer/recovery.img
-        wget https://sourceforge.net/projects/exynos7880/files/vendor/vendor_a7.img/download -O a7_installer/data/vendor.img
-        mkdir vendor
-        sudo e2fsck -fy a7_installer/data/vendor.img
-        sudo resize2fs -f a7_installer/data/vendor.img 230M
-        sudo mount a7_installer/data/vendor.img vendor
-        sudo cp -rf patches/* vendor/
-        sudo rm -f vendor/lib/libgui.so vendor/lib64/libgui.so
-        sudo umount vendor
-        sudo e2fsck -fy a7_installer/data/vendor.img
-        cd a7_installer
-        zip -r -y -9 ../ubports-a7y17lte-stable-`date +%Y%m%d`.zip .
-        sed -i '24d' META-INF/com/google/android/updater-script
-        rm recovery.img
-        zip -r -y -9 ../ubports-a7y17lte-stable-norecovery-`date +%Y%m%d`.zip .
-        echo "NOW=$(date +'%Y.%m.%d'-a7y17lte-stable)" >> $GITHUB_ENV
+        mv recovery_a7y17lte.img out/recovery.img
       shell: bash
-    - uses: marvinpinto/action-automatic-releases@latest
+    - uses: actions/upload-artifact@master
       with:
-        repo_token: "${{ secrets.GITHUB_TOKEN }}"
-        automatic_release_tag: "${{ env.NOW }}"
-        prerelease: false
-        title: "${{ env.NOW }}"
-        files: |
-          ubports-a7y17lte-*.zip
-          a7_installer/boot.img
+        name: device_a7y17lte
+        path: |
+          out/*
