@@ -24,7 +24,6 @@ jobs:
         libssl-dev libtinfo5 python2 sudo unzip wget xz-utils -y --no-install-recommends
         sudo ln -sf python2.7 /usr/bin/python
         ln -s deviceinfo-a5y17lte deviceinfo
-        mv ramdisk-recovery_a5y17lte.img ramdisk-recovery.img
         ./build.sh
         DEVICE="$(source deviceinfo && echo $deviceinfo_codename)"
         ./build/prepare-fake-ota.sh out/device_a5y17lte.tar.xz ota
@@ -32,6 +31,7 @@ jobs:
         ./build/system-image-from-ota.sh ota/ubuntu_command out
         mv out/rootfs.img a5_installer/data/ubuntu.img
         mv out/boot.img a5_installer/boot.img
+        mv recovery_a5y17lte.img a5_installer/recovery.img
         wget https://sourceforge.net/projects/exynos7880/files/vendor/vendor_a5.img/download -O a5_installer/data/vendor.img
         mkdir vendor
         sudo e2fsck -fy a5_installer/data/vendor.img
@@ -53,9 +53,8 @@ jobs:
         files: |
           ubports-a5y17lte-*.zip
           a5_installer/boot.img
-          out/recovery.img
 
-  build_a5-focal:
+  build_a5-stable:
     runs-on: ubuntu-20.04
 
     steps:
@@ -70,7 +69,6 @@ jobs:
         libssl-dev libtinfo5 python2 sudo unzip wget xz-utils -y --no-install-recommends
         sudo ln -sf python2.7 /usr/bin/python
         ln -s deviceinfo-a5y17lte deviceinfo
-        mv ramdisk-recovery_a5y17lte.img ramdisk-recovery.img
         ./build.sh
         DEVICE="$(source deviceinfo && echo $deviceinfo_codename)"
         ./build/prepare-fake-ota-stable.sh out/device_a5y17lte.tar.xz ota
@@ -78,6 +76,7 @@ jobs:
         ./build/system-image-from-ota.sh ota/ubuntu_command out
         mv out/rootfs.img a5_installer/data/ubuntu.img
         mv out/boot.img a5_installer/boot.img
+        mv recovery_a5y17lte.img a5_installer/recovery.img
         wget https://sourceforge.net/projects/exynos7880/files/vendor/vendor_a5.img/download -O a5_installer/data/vendor.img
         mkdir vendor
         sudo e2fsck -fy a5_installer/data/vendor.img
@@ -94,12 +93,11 @@ jobs:
       with:
         repo_token: "${{ secrets.GITHUB_TOKEN }}"
         automatic_release_tag: "${{ env.NOW }}"
-        prerelease: true
+        prerelease: false
         title: "${{ env.NOW }}"
         files: |
           ubports-a5y17lte-*.zip
           a5_installer/boot.img
-          out/recovery.img
 
   build_a7:
     runs-on: ubuntu-20.04
@@ -116,7 +114,6 @@ jobs:
         libssl-dev libtinfo5 python2 sudo unzip wget xz-utils -y --no-install-recommends
         sudo ln -sf python2.7 /usr/bin/python
         ln -s deviceinfo-a7y17lte deviceinfo
-        mv ramdisk-recovery_a7y17lte.img ramdisk-recovery.img
         ./build.sh
         DEVICE="$(source deviceinfo && echo $deviceinfo_codename)"
         ./build/prepare-fake-ota.sh out/device_a7y17lte.tar.xz ota
@@ -124,6 +121,7 @@ jobs:
         ./build/system-image-from-ota.sh ota/ubuntu_command out
         mv out/rootfs.img a7_installer/data/ubuntu.img
         mv out/boot.img a7_installer/boot.img
+        mv recovery_a7y17lte.img a7_installer/recovery.img
         wget https://sourceforge.net/projects/exynos7880/files/vendor/vendor_a7.img/download -O a7_installer/data/vendor.img
         mkdir vendor
         sudo e2fsck -fy a7_installer/data/vendor.img
@@ -145,9 +143,8 @@ jobs:
         files: |
           ubports-a7y17lte-*.zip
           a7_installer/boot.img
-          out/recovery.img
           
-  build_a7-focal:
+  build_a7-stable:
     runs-on: ubuntu-20.04
 
     steps:
@@ -162,7 +159,6 @@ jobs:
         libssl-dev libtinfo5 python2 sudo unzip wget xz-utils -y --no-install-recommends
         sudo ln -sf python2.7 /usr/bin/python
         ln -s deviceinfo-a7y17lte deviceinfo
-        mv ramdisk-recovery_a7y17lte.img ramdisk-recovery.img
         ./build.sh
         DEVICE="$(source deviceinfo && echo $deviceinfo_codename)"
         ./build/prepare-fake-ota-stable.sh out/device_a7y17lte.tar.xz ota
@@ -170,6 +166,7 @@ jobs:
         ./build/system-image-from-ota.sh ota/ubuntu_command out
         mv out/rootfs.img a7_installer/data/ubuntu.img
         mv out/boot.img a7_installer/boot.img
+        mv recovery_a7y17lte.img a7_installer/recovery.img
         wget https://sourceforge.net/projects/exynos7880/files/vendor/vendor_a7.img/download -O a7_installer/data/vendor.img
         mkdir vendor
         sudo e2fsck -fy a7_installer/data/vendor.img
@@ -186,9 +183,8 @@ jobs:
       with:
         repo_token: "${{ secrets.GITHUB_TOKEN }}"
         automatic_release_tag: "${{ env.NOW }}"
-        prerelease: true
+        prerelease: false
         title: "${{ env.NOW }}"
         files: |
           ubports-a7y17lte-*.zip
           a7_installer/boot.img
-          out/recovery.img
