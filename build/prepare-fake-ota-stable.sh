@@ -5,7 +5,7 @@ source "${HERE}/deviceinfo"
 
 # Fetches android9 rootfs and generic system image to prepare flashable image from CI-built device tarball
 URL='https://system-image.ubports.com'
-ROOTFS_URL='https://system-image.ubports.com/pool/ubports-53c828a8f08da514ca3b0b19606a094b418dd77cea24b00429f2da64c2b6a366.tar.xz'
+ROOTFS_URL='https://system-image.ubports.com/pool/ubports-f25fa0c5a94c23e17e544e5ff3dd148f3835abc6c53471a866a33d2c244c8682.tar.xz'
 OTA_CHANNEL='16.04/arm64/android9/devel'
 
 if [[ "$deviceinfo_bootimg_os_version" == 9* ]]; then
