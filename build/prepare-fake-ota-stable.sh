@@ -5,9 +5,8 @@ source "${HERE}/deviceinfo"
 
 # Fetches android9 rootfs and generic system image to prepare flashable image from CI-built device tarball
 URL='https://system-image.ubports.com'
-ROOTFS_URL='https://system-image.ubports.com/pool/ubports-53c828a8f08da514ca3b0b19606a094b418dd77cea24b00429f2da64c2b6a366.delta-ubports-0cd6d21caa26d8603c3484c1765f12cad81edab452aa5cce1a6cc3b99a09c17f.tar.xz'
-DEVICE_GENERIC_URL='https://ci.ubports.com/job/UBportsCommunityPortsJenkinsCI/job/ubports%252Fporting%252Fcommunity-ports%252Fjenkins-ci%252Fgeneric_arm64/job/halium-10.0/lastSuccessfulBuild/artifact/halium_halium_arm64.tar.xz'
-OTA_CHANNEL='16.04/arm64/android9/stable'
+ROOTFS_URL='https://system-image.ubports.com/pool/ubports-53c828a8f08da514ca3b0b19606a094b418dd77cea24b00429f2da64c2b6a366.tar.xz'
+OTA_CHANNEL='16.04/arm64/android9/devel'
 
 if [[ "$deviceinfo_bootimg_os_version" == 9* ]]; then
     DEVICE_GENERIC_URL='https://ci.ubports.com/job/UBportsCommunityPortsJenkinsCI/job/ubports%252Fporting%252Fcommunity-ports%252Fjenkins-ci%252Fgeneric_arm64/job/main/lastSuccessfulBuild/artifact/halium_halium_arm64.tar.xz'
@@ -40,11 +39,15 @@ mount system
 EOF
 
 # Download and prepare rootfs
-file=$(basename "$ROOTFS_URL")
-wget "$ROOTFS_URL" -P "$OUTPUT"
+#file=$(basename "$ROOTFS_URL")
+#wget "$ROOTFS_URL" -P "$OUTPUT"
+#mkdir -p "$OUTPUT/rootfs/system"
+#cd "$OUTPUT/rootfs"
+#sudo tar xpzf "../$file" --numeric-owner -C system
 mkdir -p "$OUTPUT/rootfs/system"
+wget "$ROOTFS_URL" -O "$OUTPUT/rootfs"/rootfs_stable.tar.xz
 cd "$OUTPUT/rootfs"
-sudo tar xpzf "../$file" --numeric-owner -C system
+sudo tar -xf rootfs_stable.tar.xz
 
 # Enable SSH and USB tethering for debugging in devel-flashable builds
 echo "start on startup" > system/etc/init/ssh.override
@@ -99,3 +102,4 @@ echo "update $file $file.asc" >> "$OUTPUT/ubuntu_command"
 
 # End ubuntu_command
 echo 'unmount system' >> "$OUTPUT/ubuntu_command"
+
