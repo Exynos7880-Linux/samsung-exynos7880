@@ -18,4 +18,5 @@ deviceinfo_bootimg_qcdt="false"
 deviceinfo_bootimg_os_version="10"
 deviceinfo_bootimg_os_patch_level="2022-04"
 deviceinfo_rootfs_image_sector_size="4096"
-
+deviceinfo_has_recovery_partition="true"
+deviceinfo_recovery_partition_size="39845888"

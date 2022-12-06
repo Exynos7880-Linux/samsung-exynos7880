@@ -24,6 +24,7 @@ jobs:
         libssl-dev libtinfo5 python2 sudo unzip wget xz-utils -y --no-install-recommends
         sudo ln -sf python2.7 /usr/bin/python
         ln -s deviceinfo-a5y17lte deviceinfo
+        mv ramdisk-recovery_a5y17lte.img ramdisk-recovery.img
         ./build.sh
         DEVICE="$(source deviceinfo && echo $deviceinfo_codename)"
         ./build/prepare-fake-ota.sh out/device_a5y17lte.tar.xz ota
@@ -52,6 +53,7 @@ jobs:
         files: |
           ubports-a5y17lte-*.zip
           a5_installer/boot.img
+          out/recovery.img
 
   build_a5-focal:
     runs-on: ubuntu-20.04
@@ -60,7 +62,7 @@ jobs:
     - name: Checkout
       uses: actions/checkout@master
 
-    - name: Build A5 Focal
+    - name: Build A5 Stable
       run: |
         sudo apt-get update
         sudo apt install android-tools-mkbootimg jq ccache img2simg bc bison \
@@ -68,9 +70,10 @@ jobs:
         libssl-dev libtinfo5 python2 sudo unzip wget xz-utils -y --no-install-recommends
         sudo ln -sf python2.7 /usr/bin/python
         ln -s deviceinfo-a5y17lte deviceinfo
+        mv ramdisk-recovery_a5y17lte.img ramdisk-recovery.img
         ./build.sh
         DEVICE="$(source deviceinfo && echo $deviceinfo_codename)"
-        ./build/prepare-fake-ota-focal.sh out/device_a5y17lte.tar.xz ota
+        ./build/prepare-fake-ota-stable.sh out/device_a5y17lte.tar.xz ota
         mkdir -p out
         ./build/system-image-from-ota.sh ota/ubuntu_command out
         mv out/rootfs.img a5_installer/data/ubuntu.img
@@ -84,8 +87,8 @@ jobs:
         sudo umount vendor
         sudo e2fsck -fy a5_installer/data/vendor.img
         cd a5_installer
-        zip -r -y -9 ../ubports-a5y17lte-focal-test-`date +%Y%m%d`.zip .
-        echo "NOW=$(date +'%Y.%m.%d'-a5y17lte-focal-test)" >> $GITHUB_ENV
+        zip -r -y -9 ../ubports-a5y17lte-stable-`date +%Y%m%d`.zip .
+        echo "NOW=$(date +'%Y.%m.%d'-a5y17lte-stable)" >> $GITHUB_ENV
       shell: bash
     - uses: marvinpinto/action-automatic-releases@latest
       with:
@@ -96,6 +99,7 @@ jobs:
         files: |
           ubports-a5y17lte-*.zip
           a5_installer/boot.img
+          out/recovery.img
 
   build_a7:
     runs-on: ubuntu-20.04
@@ -112,6 +116,7 @@ jobs:
         libssl-dev libtinfo5 python2 sudo unzip wget xz-utils -y --no-install-recommends
         sudo ln -sf python2.7 /usr/bin/python
         ln -s deviceinfo-a7y17lte deviceinfo
+        mv ramdisk-recovery_a7y17lte.img ramdisk-recovery.img
         ./build.sh
         DEVICE="$(source deviceinfo && echo $deviceinfo_codename)"
         ./build/prepare-fake-ota.sh out/device_a7y17lte.tar.xz ota
@@ -140,6 +145,7 @@ jobs:
         files: |
           ubports-a7y17lte-*.zip
           a7_installer/boot.img
+          out/recovery.img
           
   build_a7-focal:
     runs-on: ubuntu-20.04
@@ -148,7 +154,7 @@ jobs:
     - name: Checkout
       uses: actions/checkout@master
 
-    - name: Build A7 Focal
+    - name: Build A7 Stable
       run: |
         sudo apt-get update
         sudo apt install android-tools-mkbootimg jq ccache img2simg bc bison \
@@ -156,9 +162,10 @@ jobs:
         libssl-dev libtinfo5 python2 sudo unzip wget xz-utils -y --no-install-recommends
         sudo ln -sf python2.7 /usr/bin/python
         ln -s deviceinfo-a7y17lte deviceinfo
+        mv ramdisk-recovery_a7y17lte.img ramdisk-recovery.img
         ./build.sh
         DEVICE="$(source deviceinfo && echo $deviceinfo_codename)"
-        ./build/prepare-fake-ota-focal.sh out/device_a7y17lte.tar.xz ota
+        ./build/prepare-fake-ota-stable.sh out/device_a7y17lte.tar.xz ota
         mkdir -p out
         ./build/system-image-from-ota.sh ota/ubuntu_command out
         mv out/rootfs.img a7_installer/data/ubuntu.img
@@ -172,8 +179,8 @@ jobs:
         sudo umount vendor
         sudo e2fsck -fy a7_installer/data/vendor.img
         cd a7_installer
-        zip -r -y -9 ../ubports-a7y17lte-focal-test-`date +%Y%m%d`.zip .
-        echo "NOW=$(date +'%Y.%m.%d'-a7y17lte-focal-test)" >> $GITHUB_ENV
+        zip -r -y -9 ../ubports-a7y17lte-stable-`date +%Y%m%d`.zip .
+        echo "NOW=$(date +'%Y.%m.%d'-a7y17lte-stable)" >> $GITHUB_ENV
       shell: bash
     - uses: marvinpinto/action-automatic-releases@latest
       with:
@@ -184,3 +191,4 @@ jobs:
         files: |
           ubports-a7y17lte-*.zip
           a7_installer/boot.img
+          out/recovery.img
