@@ -42,6 +42,9 @@ jobs:
         sudo e2fsck -fy a5_installer/data/vendor.img
         cd a5_installer
         zip -r -y -9 ../ubports-a5y17lte-devel-`date +%Y%m%d`.zip .
+        sed -i '24d' META-INF/com/google/android/updater-script
+        rm recovery.img
+        zip -r -y -9 ../ubports-a5y17lte-devel-norecovery-`date +%Y%m%d`.zip .
         echo "NOW=$(date +'%Y.%m.%d'-a5y17lte)" >> $GITHUB_ENV
       shell: bash
     - uses: marvinpinto/action-automatic-releases@latest
@@ -87,6 +90,9 @@ jobs:
         sudo e2fsck -fy a5_installer/data/vendor.img
         cd a5_installer
         zip -r -y -9 ../ubports-a5y17lte-stable-`date +%Y%m%d`.zip .
+        sed -i '24d' META-INF/com/google/android/updater-script
+        rm recovery.img
+        zip -r -y -9 ../ubports-a5y17lte-stable-norecovery-`date +%Y%m%d`.zip .
         echo "NOW=$(date +'%Y.%m.%d'-a5y17lte-stable)" >> $GITHUB_ENV
       shell: bash
     - uses: marvinpinto/action-automatic-releases@latest
@@ -132,6 +138,9 @@ jobs:
         sudo e2fsck -fy a7_installer/data/vendor.img
         cd a7_installer
         zip -r -y -9 ../ubports-a7y17lte-devel-`date +%Y%m%d`.zip .
+        sed -i '24d' META-INF/com/google/android/updater-script
+        rm recovery.img
+        zip -r -y -9 ../ubports-a7y17lte-devel-norecovery-`date +%Y%m%d`.zip .
         echo "NOW=$(date +'%Y.%m.%d'-a7y17lte)" >> $GITHUB_ENV
       shell: bash
     - uses: marvinpinto/action-automatic-releases@latest
@@ -177,6 +186,9 @@ jobs:
         sudo e2fsck -fy a7_installer/data/vendor.img
         cd a7_installer
         zip -r -y -9 ../ubports-a7y17lte-stable-`date +%Y%m%d`.zip .
+        sed -i '24d' META-INF/com/google/android/updater-script
+        rm recovery.img
+        zip -r -y -9 ../ubports-a7y17lte-stable-norecovery-`date +%Y%m%d`.zip .
         echo "NOW=$(date +'%Y.%m.%d'-a7y17lte-stable)" >> $GITHUB_ENV
       shell: bash
     - uses: marvinpinto/action-automatic-releases@latest
