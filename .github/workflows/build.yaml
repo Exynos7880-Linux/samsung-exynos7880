@@ -24,6 +24,9 @@ jobs:
         libssl-dev libtinfo5 python2 sudo unzip wget xz-utils -y --no-install-recommends
         sudo ln -sf python2.7 /usr/bin/python
         ln -s deviceinfo-a5y17lte deviceinfo
+        sudo wget https://raw.githubusercontent.com/LineageOS/android_system_tools_mkbootimg/lineage-19.1/mkbootimg.py -O /usr/bin/mkbootimg
+        sudo chmod 755 /usr/bin/mkbootimg
+        mv ramdisk-overlay/ramdisk-recovery_a5.img ramdisk-overlay/ramdisk-recovery.img && rm ramdisk-overlay/ramdisk-recovery_a7.img
         ./build.sh
         DEVICE="$(source deviceinfo && echo $deviceinfo_codename)"
         ./build/prepare-fake-ota.sh out/device_a5y17lte.tar.xz ota
@@ -31,14 +34,12 @@ jobs:
         ./build/system-image-from-ota.sh ota/ubuntu_command out
         mv out/rootfs.img a5_installer/data/ubuntu.img
         mv out/boot.img a5_installer/boot.img
-        mv recovery_a5y17lte.img a5_installer/recovery.img
-        wget https://sourceforge.net/projects/exynos7880/files/vendor/vendor_a5.img/download -O a5_installer/data/vendor.img
+        mv out/recovery.img a5_installer/recovery.img
+        wget https://sourceforge.net/projects/exynos7880/files/vendor/vendor.img/download -O a5_installer/data/vendor.img
         mkdir vendor
         sudo e2fsck -fy a5_installer/data/vendor.img
-        sudo resize2fs -f a5_installer/data/vendor.img 230M
         sudo mount a5_installer/data/vendor.img vendor
-        sudo cp -rf patches/* vendor/
-        sudo rm -f vendor/lib/libgui.so vendor/lib64/libgui.so
+        sudo cp -f patches/build_a5.prop vendor/build.prop && sudo chmod 600 vendor/build.prop && sudo cp -r patches/odm/etc/build_a5.prop vendor/odm/etc/build.prop
         sudo umount vendor
         sudo e2fsck -fy a5_installer/data/vendor.img
         cd a5_installer
@@ -72,16 +73,27 @@ jobs:
         build-essential ca-certificates cpio curl flex git kmod \
         libssl-dev libtinfo5 python2 sudo unzip wget xz-utils -y --no-install-recommends
         sudo ln -sf python2.7 /usr/bin/python
+        sudo wget https://raw.githubusercontent.com/LineageOS/android_system_tools_mkbootimg/lineage-19.1/mkbootimg.py -O /usr/bin/mkbootimg
+        sudo chmod 755 /usr/bin/mkbootimg
         ln -s deviceinfo-a5y17lte deviceinfo
+        mv ramdisk-overlay/ramdisk-recovery_a5.img ramdisk-overlay/ramdisk-recovery.img && rm ramdisk-overlay/ramdisk-recovery_a7.img
         ./build.sh
-        mv recovery_a5y17lte.img out/recovery.img
+        echo "NOW=$(date +'%Y.%m.%d'-device_a5y17lte)" >> $GITHUB_ENV
       shell: bash
     - uses: actions/upload-artifact@master
       with:
         name: device_a5y17lte
         path: |
           out/*
-
+    - uses: marvinpinto/action-automatic-releases@latest
+      with:
+        repo_token: "${{ secrets.GITHUB_TOKEN }}"
+        automatic_release_tag: "${{ env.NOW }}"
+        prerelease: true
+        title: "${{ env.NOW }}"
+        files: |
+          out/*
+          
   build_a7:
     runs-on: ubuntu-20.04
 
@@ -96,7 +108,10 @@ jobs:
         build-essential ca-certificates cpio curl flex git kmod \
         libssl-dev libtinfo5 python2 sudo unzip wget xz-utils -y --no-install-recommends
         sudo ln -sf python2.7 /usr/bin/python
+        sudo wget https://raw.githubusercontent.com/LineageOS/android_system_tools_mkbootimg/lineage-19.1/mkbootimg.py -O /usr/bin/mkbootimg
+        sudo chmod 755 /usr/bin/mkbootimg
         ln -s deviceinfo-a7y17lte deviceinfo
+        mv ramdisk-overlay/ramdisk-recovery_a7.img ramdisk-overlay/ramdisk-recovery.img && rm ramdisk-overlay/ramdisk-recovery_a5.img
         ./build.sh
         DEVICE="$(source deviceinfo && echo $deviceinfo_codename)"
         ./build/prepare-fake-ota.sh out/device_a7y17lte.tar.xz ota
@@ -104,14 +119,12 @@ jobs:
         ./build/system-image-from-ota.sh ota/ubuntu_command out
         mv out/rootfs.img a7_installer/data/ubuntu.img
         mv out/boot.img a7_installer/boot.img
-        mv recovery_a7y17lte.img a7_installer/recovery.img
-        wget https://sourceforge.net/projects/exynos7880/files/vendor/vendor_a7.img/download -O a7_installer/data/vendor.img
+        mv out/recovery.img a7_installer/recovery.img
+        wget https://sourceforge.net/projects/exynos7880/files/vendor/vendor.img/download -O a7_installer/data/vendor.img
         mkdir vendor
         sudo e2fsck -fy a7_installer/data/vendor.img
-        sudo resize2fs -f a7_installer/data/vendor.img 230M
         sudo mount a7_installer/data/vendor.img vendor
-        sudo cp -rf patches/* vendor/
-        sudo rm -f vendor/lib/libgui.so vendor/lib64/libgui.so
+        sudo cp -r patches/build_a7.prop vendor/build.prop && sudo chmod 600 vendor/build.prop && sudo cp -r patches/odm/etc/build_a7.prop vendor/odm/etc/build.prop
         sudo umount vendor
         sudo e2fsck -fy a7_installer/data/vendor.img
         cd a7_installer
@@ -145,12 +158,23 @@ jobs:
         build-essential ca-certificates cpio curl flex git kmod \
         libssl-dev libtinfo5 python2 sudo unzip wget xz-utils -y --no-install-recommends
         sudo ln -sf python2.7 /usr/bin/python
+        sudo wget https://raw.githubusercontent.com/LineageOS/android_system_tools_mkbootimg/lineage-19.1/mkbootimg.py -O /usr/bin/mkbootimg
+        sudo chmod 755 /usr/bin/mkbootimg
         ln -s deviceinfo-a7y17lte deviceinfo
+        mv ramdisk-overlay/ramdisk-recovery_a7.img ramdisk-overlay/ramdisk-recovery.img && rm ramdisk-overlay/ramdisk-recovery_a5.img
         ./build.sh
-        mv recovery_a7y17lte.img out/recovery.img
+        echo "NOW=$(date +'%Y.%m.%d'-device_a7y17lte)" >> $GITHUB_ENV
       shell: bash
     - uses: actions/upload-artifact@master
       with:
         name: device_a7y17lte
         path: |
+          out/*
+    - uses: marvinpinto/action-automatic-releases@latest
+      with:
+        repo_token: "${{ secrets.GITHUB_TOKEN }}"
+        automatic_release_tag: "${{ env.NOW }}"
+        prerelease: true
+        title: "${{ env.NOW }}"
+        files: |
           out/*

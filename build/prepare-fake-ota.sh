@@ -1,19 +1,32 @@
 #!/bin/bash
 
+if [[ $(id -u) -ne 0 ]] ; then
+    exec fakeroot -- $0 $*
+fi
+
 HERE=$(pwd)
 source "${HERE}/deviceinfo"
 
 # Fetches android9 rootfs and generic system image to prepare flashable image from CI-built device tarball
 URL='https://system-image.ubports.com'
-ROOTFS_URL='https://ci.ubports.com/job/xenial-hybris-android9-rootfs-arm64/815/artifact/ubuntu-touch-android9-arm64.tar.gz'
-DEVICE_GENERIC_URL='https://ci.ubports.com/job/UBportsCommunityPortsJenkinsCI/job/ubports%252Fporting%252Fcommunity-ports%252Fjenkins-ci%252Fgeneric_arm64/job/halium-10.0/lastSuccessfulBuild/artifact/halium_halium_arm64.tar.xz'
-OTA_CHANNEL='16.04/arm64/android9/rc'
+ROOTFS_URL=${ROOTFS_URL:-'https://ci.ubports.com/job/xenial-hybris-android9-rootfs-arm64/lastSuccessfulBuild/artifact/ubuntu-touch-android9-arm64.tar.gz'}
+OTA_CHANNEL=${OTA_CHANNEL:-'16.04/arm64/android9/devel'}
 
-if [[ "$deviceinfo_bootimg_os_version" == 9* ]]; then
-    DEVICE_GENERIC_URL='https://ci.ubports.com/job/UBportsCommunityPortsJenkinsCI/job/ubports%252Fporting%252Fcommunity-ports%252Fjenkins-ci%252Fgeneric_arm64/job/main/lastSuccessfulBuild/artifact/halium_halium_arm64.tar.xz'
-else
-    DEVICE_GENERIC_URL='https://ci.ubports.com/job/UBportsCommunityPortsJenkinsCI/job/ubports%252Fporting%252Fcommunity-ports%252Fjenkins-ci%252Fgeneric_arm64/job/halium-10.0/lastSuccessfulBuild/artifact/halium_halium_arm64.tar.xz'
-fi
+case "$deviceinfo_bootimg_os_version" in
+    9)
+        DEVICE_GENERIC_URL='https://ci.ubports.com/job/UBportsCommunityPortsJenkinsCI/job/ubports%252Fporting%252Fcommunity-ports%252Fjenkins-ci%252Fgeneric_arm64/job/main/lastSuccessfulBuild/artifact/halium_halium_arm64.tar.xz'
+        ;;
+    10)
+        DEVICE_GENERIC_URL='https://ci.ubports.com/job/UBportsCommunityPortsJenkinsCI/job/ubports%252Fporting%252Fcommunity-ports%252Fjenkins-ci%252Fgeneric_arm64/job/halium-10.0/lastSuccessfulBuild/artifact/halium_halium_arm64.tar.xz'
+        ;;
+    11)
+        DEVICE_GENERIC_URL='https://ci.ubports.com/job/UBportsCommunityPortsJenkinsCI/job/ubports%252Fporting%252Fcommunity-ports%252Fjenkins-ci%252Fgeneric_arm64/job/halium-11.0/lastSuccessfulBuild/artifact/halium_halium_arm64.tar.xz'
+        ;;
+    *)
+        echo "Unsupported Android version $deviceinfo_bootimg_os_version!"
+        exit 1
+        ;;
+esac
 
 DEVICE_TARBALL="$1"
 OUTPUT="$2"
@@ -44,7 +57,7 @@ file=$(basename "$ROOTFS_URL")
 wget "$ROOTFS_URL" -P "$OUTPUT"
 mkdir -p "$OUTPUT/rootfs/system"
 cd "$OUTPUT/rootfs"
-sudo tar xpzf "../$file" --numeric-owner -C system
+tar xpzf "../$file" --numeric-owner -C system
 
 # Enable SSH and USB tethering for debugging in devel-flashable builds
 echo "start on startup" > system/etc/init/ssh.override
@@ -53,9 +66,9 @@ echo "exec /usr/sbin/sshd -D -o PasswordAuthentication=yes -o PermitEmptyPasswor
 echo "start on startup" > system/etc/init/usb-tethering.conf
 echo "exec /bin/bash /usr/bin/usb-tethering" >> system/etc/init/usb-tethering.conf
 
-sudo XZ_OPT=-1 tar cJf "../rootfs.tar.xz" system
+XZ_OPT=-1 tar cJf "../rootfs.tar.xz" system
 cd -
-sudo rm -rf "./$OUTPUT/rootfs"
+rm -rf "./$OUTPUT/rootfs"
 
 file="rootfs.tar.xz"
 touch "$OUTPUT/$file.asc"
@@ -89,7 +102,9 @@ EOF
 mkdir -p system/etc/system-image/config.d
 ln -s ../client.ini system/etc/system-image/config.d/00_default.ini
 ln -s ../channel.ini system/etc/system-image/config.d/01_channel.ini
-tar cvJf "../version.tar.xz" system
+tar cvJf "../version.tar.xz" \
+    --owner=root --group=root \
+    system
 cd -
 rm -r "$OUTPUT/version"
 
@@ -99,4 +114,3 @@ echo "update $file $file.asc" >> "$OUTPUT/ubuntu_command"
 
 # End ubuntu_command
 echo 'unmount system' >> "$OUTPUT/ubuntu_command"
-

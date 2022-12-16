@@ -205,7 +205,7 @@ do
             case "$2" in
                 system)
                     mkdir -p "$SYSTEM_MOUNTPOINT"
-                    LOOPDEV=$(losetup -f)
+                    LOOPDEV=$(sudo losetup -f)
 
                     if [ ! -e "$LOOPDEV" ]; then
                         sudo mknod "$LOOPDEV" b 7 $(echo "$LOOPDEV" | grep -Eo '[0-9]+$')
