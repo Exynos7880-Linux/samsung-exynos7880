@@ -35,7 +35,7 @@ jobs:
       with:
         repo_token: "${{ secrets.GITHUB_TOKEN }}"
         automatic_release_tag: "${{ env.NOW }}"
-        prerelease: true
+        prerelease: false
         title: "${{ env.NOW }}"
         files: |
           ubports-a5y17lte-*.zip
@@ -101,7 +101,7 @@ jobs:
       with:
         repo_token: "${{ secrets.GITHUB_TOKEN }}"
         automatic_release_tag: "${{ env.NOW }}"
-        prerelease: true
+        prerelease: false
         title: "${{ env.NOW }}"
         files: |
           ubports-a7y17lte-*.zip
