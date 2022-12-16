@@ -33,8 +33,6 @@ jobs:
         mv out/boot.img a5_installer/boot.img
         mv out/recovery.img a5_installer/recovery.img
         wget https://cytranet.dl.sourceforge.net/project/exynos7880/vendor/vendor.img -O a5_installer/data/vendor.img
-        mkdir vendor
-        sudo ./prep_vendor.sh a5
         cd a5_installer
         zip -r -y -9 ../ubports-a5y17lte-devel-`date +%Y%m%d`.zip .
         sed -i '24d' META-INF/com/google/android/updater-script
