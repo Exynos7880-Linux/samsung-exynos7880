@@ -58,6 +58,7 @@ jobs:
         files: |
           ubports-a5y17lte-*.zip
           a5_installer/boot.img
+          a5_installer/recovery.img
 
   build_a5-device:
     runs-on: ubuntu-20.04
@@ -143,6 +144,7 @@ jobs:
         files: |
           ubports-a7y17lte-*.zip
           a7_installer/boot.img
+          a7_installer/recovery.img
           
   build_a7-device:
     runs-on: ubuntu-20.04
