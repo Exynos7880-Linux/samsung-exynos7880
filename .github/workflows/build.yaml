@@ -25,7 +25,7 @@ jobs:
         ln -s deviceinfo-a5y17lte deviceinfo
         sudo wget https://raw.githubusercontent.com/LineageOS/android_system_tools_mkbootimg/lineage-19.1/mkbootimg.py -O /usr/bin/mkbootimg
         sudo chmod 755 /usr/bin/mkbootimg
-        mv ramdisk-overlay/ramdisk-recovery_a5.img ramdisk-overlay/ramdisk-recovery.img && rm ramdisk-overlay/ramdisk-recovery_a7.img
+        mv ramdisk-recovery_a5.img ramdisk-recovery.img && rm ramdisk-recovery_a7.img
         ./build.sh
         ./build/prepare-fake-ota.sh out/device_a5y17lte.tar.xz ota
         ./build/system-image-from-ota.sh ota/ubuntu_command out
@@ -57,7 +57,7 @@ jobs:
         sudo wget https://raw.githubusercontent.com/LineageOS/android_system_tools_mkbootimg/lineage-19.1/mkbootimg.py -O /usr/bin/mkbootimg
         sudo chmod 755 /usr/bin/mkbootimg
         ln -s deviceinfo-a5y17lte deviceinfo
-        mv ramdisk-overlay/ramdisk-recovery_a5.img ramdisk-overlay/ramdisk-recovery.img && rm ramdisk-overlay/ramdisk-recovery_a7.img
+        mv ramdisk-recovery_a5.img ramdisk-recovery.img && rm ramdisk-recovery_a7.img
         ./build.sh
         echo "NOW=$(date +'%Y.%m.%d'-device_a5y17lte)" >> $GITHUB_ENV
       shell: bash
@@ -91,7 +91,7 @@ jobs:
         sudo wget https://raw.githubusercontent.com/LineageOS/android_system_tools_mkbootimg/lineage-19.1/mkbootimg.py -O /usr/bin/mkbootimg
         sudo chmod 755 /usr/bin/mkbootimg
         ln -s deviceinfo-a7y17lte deviceinfo
-        mv ramdisk-overlay/ramdisk-recovery_a7.img ramdisk-overlay/ramdisk-recovery.img && rm ramdisk-overlay/ramdisk-recovery_a5.img
+        mv ramdisk-recovery_a7.img ramdisk-recovery.img && rm ramdisk-recovery_a5.img
         ./build.sh
         ./build/prepare-fake-ota.sh out/device_a7y17lte.tar.xz ota
         ./build/system-image-from-ota.sh ota/ubuntu_command out
@@ -123,7 +123,7 @@ jobs:
         sudo wget https://raw.githubusercontent.com/LineageOS/android_system_tools_mkbootimg/lineage-19.1/mkbootimg.py -O /usr/bin/mkbootimg
         sudo chmod 755 /usr/bin/mkbootimg
         ln -s deviceinfo-a7y17lte deviceinfo
-        mv ramdisk-overlay/ramdisk-recovery_a7.img ramdisk-overlay/ramdisk-recovery.img && rm ramdisk-overlay/ramdisk-recovery_a5.img
+        mv ramdisk-recovery_a7.img ramdisk-recovery.img && rm ramdisk-recovery_a5.img
         ./build.sh
         echo "NOW=$(date +'%Y.%m.%d'-device_a7y17lte)" >> $GITHUB_ENV
       shell: bash
