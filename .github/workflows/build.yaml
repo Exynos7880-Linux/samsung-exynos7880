@@ -29,16 +29,7 @@ jobs:
         ./build.sh
         ./build/prepare-fake-ota.sh out/device_a5y17lte.tar.xz ota
         ./build/system-image-from-ota.sh ota/ubuntu_command out
-        mv out/rootfs.img a5_installer/data/ubuntu.img
-        mv out/boot.img a5_installer/boot.img
-        mv out/recovery.img a5_installer/recovery.img
-        wget https://cytranet.dl.sourceforge.net/project/exynos7880/vendor/vendor.img -O a5_installer/data/vendor.img
-        cd a5_installer
-        zip -r -y -9 ../ubports-a5y17lte-devel-`date +%Y%m%d`.zip .
-        sed -i '24d' META-INF/com/google/android/updater-script
-        rm recovery.img
-        zip -r -y -9 ../ubports-a5y17lte-devel-norecovery-`date +%Y%m%d`.zip .
-        echo "NOW=$(date +'%Y.%m.%d'-a5y17lte)" >> $GITHUB_ENV
+        ./flashable_zips.sh a5
       shell: bash
     - uses: marvinpinto/action-automatic-releases@latest
       with:
@@ -48,8 +39,8 @@ jobs:
         title: "${{ env.NOW }}"
         files: |
           ubports-a5y17lte-*.zip
-          a5_installer/boot.img
-          a5_installer/recovery.img
+          out/boot.img
+          out/recovery.img
 
   build_a5-device:
     runs-on: ubuntu-20.04
@@ -104,18 +95,7 @@ jobs:
         ./build.sh
         ./build/prepare-fake-ota.sh out/device_a7y17lte.tar.xz ota
         ./build/system-image-from-ota.sh ota/ubuntu_command out
-        mv out/rootfs.img a7_installer/data/ubuntu.img
-        mv out/boot.img a7_installer/boot.img
-        mv out/recovery.img a7_installer/recovery.img
-        wget https://cytranet.dl.sourceforge.net/project/exynos7880/vendor/vendor.img -O a7_installer/data/vendor.img
-        mkdir vendor
-        sudo ./prep_vendor.sh a7
-        cd a7_installer
-        zip -r -y -9 ../ubports-a7y17lte-devel-`date +%Y%m%d`.zip .
-        sed -i '24d' META-INF/com/google/android/updater-script
-        rm recovery.img
-        zip -r -y -9 ../ubports-a7y17lte-devel-norecovery-`date +%Y%m%d`.zip .
-        echo "NOW=$(date +'%Y.%m.%d'-a7y17lte)" >> $GITHUB_ENV
+        ./flashable_zips.sh a7
       shell: bash
     - uses: marvinpinto/action-automatic-releases@latest
       with:
@@ -125,8 +105,8 @@ jobs:
         title: "${{ env.NOW }}"
         files: |
           ubports-a7y17lte-*.zip
-          a7_installer/boot.img
-          a7_installer/recovery.img
+          out/boot.img
+          out/recovery.img
           
   build_a7-device:
     runs-on: ubuntu-20.04
