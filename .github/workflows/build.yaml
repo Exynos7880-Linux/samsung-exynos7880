@@ -35,13 +35,7 @@ jobs:
         mv out/recovery.img a5_installer/recovery.img
         wget https://cytranet.dl.sourceforge.net/project/exynos7880/vendor/vendor.img -O a5_installer/data/vendor.img
         mkdir vendor
-        sudo e2fsck -fy a5_installer/data/vendor.img
-        sudo resize2fs -f a5_installer/data/vendor.img 210M
-        sudo mount a5_installer/data/vendor.img vendor
-        sudo cp -f patches/build_a5.prop vendor/build.prop
-        sudo cp -f patches/odm/etc/build_a5.prop vendor/odm/etc/build.prop
-        sudo umount vendor
-        sudo e2fsck -fy a5_installer/data/vendor.img
+        sudo ./prep_vendor.sh a5
         cd a5_installer
         zip -r -y -9 ../ubports-a5y17lte-devel-`date +%Y%m%d`.zip .
         sed -i '24d' META-INF/com/google/android/updater-script
@@ -121,13 +115,7 @@ jobs:
         mv out/recovery.img a7_installer/recovery.img
         wget https://cytranet.dl.sourceforge.net/project/exynos7880/vendor/vendor.img -O a7_installer/data/vendor.img
         mkdir vendor
-        sudo e2fsck -fy a7_installer/data/vendor.img
-        sudo resize2fs -f a7_installer/data/vendor.img 210M
-        sudo mount a7_installer/data/vendor.img vendor
-        sudo cp -f patches/build_a7.prop vendor/build.prop
-        sudo cp -f patches/odm/etc/build_a7.prop vendor/odm/etc/build.prop
-        sudo umount vendor
-        sudo e2fsck -fy a7_installer/data/vendor.img
+        sudo ./prep_vendor.sh a7
         cd a7_installer
         zip -r -y -9 ../ubports-a7y17lte-devel-`date +%Y%m%d`.zip .
         sed -i '24d' META-INF/com/google/android/updater-script
