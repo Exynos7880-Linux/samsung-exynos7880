@@ -39,7 +39,7 @@ jobs:
         mkdir vendor
         sudo e2fsck -fy a5_installer/data/vendor.img
         sudo mount a5_installer/data/vendor.img vendor
-        sudo cp -f patches/build_a5.prop vendor/build.prop && sudo chmod 600 vendor/build.prop && sudo cp -r patches/odm/etc/build_a5.prop vendor/odm/etc/build.prop
+        sudo cp -f patches/build_a5.prop vendor/build.prop && sudo chmod 600 vendor/build.prop && sudo cp -f patches/odm/etc/build_a5.prop vendor/odm/etc/build.prop
         sudo umount vendor
         sudo e2fsck -fy a5_installer/data/vendor.img
         cd a5_installer
@@ -125,7 +125,7 @@ jobs:
         mkdir vendor
         sudo e2fsck -fy a7_installer/data/vendor.img
         sudo mount a7_installer/data/vendor.img vendor
-        sudo cp -r patches/build_a7.prop vendor/build.prop && sudo chmod 600 vendor/build.prop && sudo cp -r patches/odm/etc/build_a7.prop vendor/odm/etc/build.prop
+        sudo cp -f patches/build_a7.prop vendor/build.prop && sudo chmod 600 vendor/build.prop && sudo cp -f patches/odm/etc/build_a7.prop vendor/odm/etc/build.prop
         sudo umount vendor
         sudo e2fsck -fy a7_installer/data/vendor.img
         cd a7_installer
