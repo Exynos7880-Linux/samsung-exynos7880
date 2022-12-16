@@ -18,10 +18,9 @@ jobs:
 
     - name: Build A5
       run: |
+        set -x
         sudo apt-get update
-        sudo apt install android-tools-mkbootimg jq ccache img2simg bc bison \
-        build-essential ca-certificates cpio curl flex git kmod \
-        libssl-dev libtinfo5 python2 sudo unzip wget xz-utils -y --no-install-recommends
+        sudo apt install android-tools-mkbootimg build-essential -y
         sudo ln -sf python2.7 /usr/bin/python
         ln -s deviceinfo-a5y17lte deviceinfo
         sudo wget https://raw.githubusercontent.com/LineageOS/android_system_tools_mkbootimg/lineage-19.1/mkbootimg.py -O /usr/bin/mkbootimg
@@ -64,9 +63,7 @@ jobs:
     - name: Build A5 device package
       run: |
         sudo apt-get update
-        sudo apt install android-tools-mkbootimg jq ccache img2simg bc bison \
-        build-essential ca-certificates cpio curl flex git kmod \
-        libssl-dev libtinfo5 python2 sudo unzip wget xz-utils -y --no-install-recommends
+        sudo apt install android-tools-mkbootimg build-essential -y
         sudo ln -sf python2.7 /usr/bin/python
         sudo wget https://raw.githubusercontent.com/LineageOS/android_system_tools_mkbootimg/lineage-19.1/mkbootimg.py -O /usr/bin/mkbootimg
         sudo chmod 755 /usr/bin/mkbootimg
@@ -98,10 +95,9 @@ jobs:
 
     - name: Build A7
       run: |
+        set -x
         sudo apt-get update
-        sudo apt install android-tools-mkbootimg jq ccache img2simg bc bison \
-        build-essential ca-certificates cpio curl flex git kmod \
-        libssl-dev libtinfo5 python2 sudo unzip wget xz-utils -y --no-install-recommends
+        sudo apt install android-tools-mkbootimg build-essential -y
         sudo ln -sf python2.7 /usr/bin/python
         sudo wget https://raw.githubusercontent.com/LineageOS/android_system_tools_mkbootimg/lineage-19.1/mkbootimg.py -O /usr/bin/mkbootimg
         sudo chmod 755 /usr/bin/mkbootimg
@@ -144,9 +140,7 @@ jobs:
     - name: Build A7 device package
       run: |
         sudo apt-get update
-        sudo apt install android-tools-mkbootimg jq ccache img2simg bc bison \
-        build-essential ca-certificates cpio curl flex git kmod \
-        libssl-dev libtinfo5 python2 sudo unzip wget xz-utils -y --no-install-recommends
+        sudo apt install android-tools-mkbootimg build-essential -y
         sudo ln -sf python2.7 /usr/bin/python
         sudo wget https://raw.githubusercontent.com/LineageOS/android_system_tools_mkbootimg/lineage-19.1/mkbootimg.py -O /usr/bin/mkbootimg
         sudo chmod 755 /usr/bin/mkbootimg
