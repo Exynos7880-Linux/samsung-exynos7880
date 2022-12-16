@@ -38,6 +38,7 @@ jobs:
         wget https://sourceforge.net/projects/exynos7880/files/vendor/vendor.img/download -O a5_installer/data/vendor.img
         mkdir vendor
         sudo e2fsck -fy a5_installer/data/vendor.img
+        sudo resize2fs -f a5_installer/data/vendor.img 210M
         sudo mount a5_installer/data/vendor.img vendor
         sudo cp -f patches/build_a5.prop vendor/build.prop && sudo chmod 600 vendor/build.prop && sudo cp -f patches/odm/etc/build_a5.prop vendor/odm/etc/build.prop
         sudo umount vendor
@@ -124,6 +125,7 @@ jobs:
         wget https://sourceforge.net/projects/exynos7880/files/vendor/vendor.img/download -O a7_installer/data/vendor.img
         mkdir vendor
         sudo e2fsck -fy a7_installer/data/vendor.img
+        sudo resize2fs -f a7_installer/data/vendor.img 210M
         sudo mount a7_installer/data/vendor.img vendor
         sudo cp -f patches/build_a7.prop vendor/build.prop && sudo chmod 600 vendor/build.prop && sudo cp -f patches/odm/etc/build_a7.prop vendor/odm/etc/build.prop
         sudo umount vendor
