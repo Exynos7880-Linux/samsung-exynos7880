@@ -18,27 +18,63 @@ jobs:
 
     - name: Build A5
       run: |
+        set -x
         sudo apt-get update
-        sudo apt install android-tools-mkbootimg jq ccache img2simg bc bison \
-        build-essential ca-certificates cpio curl flex git kmod \
-        libssl-dev libtinfo5 python2 sudo unzip wget xz-utils -y --no-install-recommends
+        sudo apt install android-tools-mkbootimg build-essential ccache img2simg -y
         sudo ln -sf python2.7 /usr/bin/python
         ln -s deviceinfo-a5y17lte deviceinfo
+        sudo wget https://raw.githubusercontent.com/LineageOS/android_system_tools_mkbootimg/lineage-19.1/mkbootimg.py -O /usr/bin/mkbootimg
+        sudo chmod 755 /usr/bin/mkbootimg
+        mv ramdisk-recovery_a5.img ramdisk-recovery.img && rm ramdisk-recovery_a7.img
         ./build.sh
-        DEVICE="$(source deviceinfo && echo $deviceinfo_codename)"
-        ./build/fetch-and-prepare-latest-ota.sh "16.04/arm64/android9/devel" "$DEVICE" ota
-        mkdir -p out
+        ./build/prepare-fake-ota.sh out/device_a5y17lte.tar.xz ota
         ./build/system-image-from-ota.sh ota/ubuntu_command out
-        mv out/rootfs.img out/ubuntu.img
+        ./flashable_zips.sh a5
       shell: bash
-    - name: upload A7 images
-      uses: actions/upload-artifact@master
+    - uses: marvinpinto/action-automatic-releases@latest
       with:
-        name: ubuntu boot A5
-        path:
-          - out/ubuntu.img
-          - out/boot.img
+        repo_token: "${{ secrets.GITHUB_TOKEN }}"
+        automatic_release_tag: "${{ env.NOW }}"
+        prerelease: false
+        title: "${{ env.NOW }}"
+        files: |
+          ubports-a5y17lte-*.zip
+          out/boot.img
+          out/recovery.img
 
+  build_a5-device:
+    runs-on: ubuntu-20.04
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@master
+
+    - name: Build A5 device package
+      run: |
+        sudo apt-get update
+        sudo apt install android-tools-mkbootimg build-essential ccache img2simg -y
+        sudo ln -sf python2.7 /usr/bin/python
+        sudo wget https://raw.githubusercontent.com/LineageOS/android_system_tools_mkbootimg/lineage-19.1/mkbootimg.py -O /usr/bin/mkbootimg
+        sudo chmod 755 /usr/bin/mkbootimg
+        ln -s deviceinfo-a5y17lte deviceinfo
+        mv ramdisk-recovery_a5.img ramdisk-recovery.img && rm ramdisk-recovery_a7.img
+        ./build.sh
+        echo "NOW=$(date +'%Y.%m.%d'-device_a5y17lte)" >> $GITHUB_ENV
+      shell: bash
+    - uses: actions/upload-artifact@master
+      with:
+        name: device_a5y17lte
+        path: |
+          out/*
+    - uses: marvinpinto/action-automatic-releases@latest
+      with:
+        repo_token: "${{ secrets.GITHUB_TOKEN }}"
+        automatic_release_tag: "${{ env.NOW }}"
+        prerelease: true
+        title: "${{ env.NOW }}"
+        files: |
+          out/*
+          
   build_a7:
     runs-on: ubuntu-20.04
 
@@ -48,23 +84,59 @@ jobs:
 
     - name: Build A7
       run: |
+        set -x
         sudo apt-get update
-        sudo apt install android-tools-mkbootimg jq ccache img2simg bc bison \
-        build-essential ca-certificates cpio curl flex git kmod \
-        libssl-dev libtinfo5 python2 sudo unzip wget xz-utils -y --no-install-recommends
+        sudo apt install android-tools-mkbootimg build-essential ccache img2simg -y
         sudo ln -sf python2.7 /usr/bin/python
+        sudo wget https://raw.githubusercontent.com/LineageOS/android_system_tools_mkbootimg/lineage-19.1/mkbootimg.py -O /usr/bin/mkbootimg
+        sudo chmod 755 /usr/bin/mkbootimg
         ln -s deviceinfo-a7y17lte deviceinfo
+        mv ramdisk-recovery_a7.img ramdisk-recovery.img && rm ramdisk-recovery_a5.img
         ./build.sh
-        DEVICE="$(source deviceinfo && echo $deviceinfo_codename)"
-        ./build/fetch-and-prepare-latest-ota.sh "16.04/arm64/android9/devel" "$DEVICE" ota
-        mkdir -p out
+        ./build/prepare-fake-ota.sh out/device_a7y17lte.tar.xz ota
         ./build/system-image-from-ota.sh ota/ubuntu_command out
-        mv out/rootfs.img out/ubuntu.img
+        ./flashable_zips.sh a7
       shell: bash
-    - name: upload A7 images
-      uses: actions/upload-artifact@master
+    - uses: marvinpinto/action-automatic-releases@latest
       with:
-        name: ubuntu boot A7
-        path:
-          - out/ubuntu.img
-          - out/boot.img
+        repo_token: "${{ secrets.GITHUB_TOKEN }}"
+        automatic_release_tag: "${{ env.NOW }}"
+        prerelease: false
+        title: "${{ env.NOW }}"
+        files: |
+          ubports-a7y17lte-*.zip
+          out/boot.img
+          out/recovery.img
+          
+  build_a7-device:
+    runs-on: ubuntu-20.04
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@master
+
+    - name: Build A7 device package
+      run: |
+        sudo apt-get update
+        sudo apt install android-tools-mkbootimg build-essential ccache img2simg -y
+        sudo ln -sf python2.7 /usr/bin/python
+        sudo wget https://raw.githubusercontent.com/LineageOS/android_system_tools_mkbootimg/lineage-19.1/mkbootimg.py -O /usr/bin/mkbootimg
+        sudo chmod 755 /usr/bin/mkbootimg
+        ln -s deviceinfo-a7y17lte deviceinfo
+        mv ramdisk-recovery_a7.img ramdisk-recovery.img && rm ramdisk-recovery_a5.img
+        ./build.sh
+        echo "NOW=$(date +'%Y.%m.%d'-device_a7y17lte)" >> $GITHUB_ENV
+      shell: bash
+    - uses: actions/upload-artifact@master
+      with:
+        name: device_a7y17lte
+        path: |
+          out/*
+    - uses: marvinpinto/action-automatic-releases@latest
+      with:
+        repo_token: "${{ secrets.GITHUB_TOKEN }}"
+        automatic_release_tag: "${{ env.NOW }}"
+        prerelease: true
+        title: "${{ env.NOW }}"
+        files: |
+          out/*

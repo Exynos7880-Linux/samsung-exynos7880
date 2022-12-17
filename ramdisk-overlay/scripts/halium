@@ -36,8 +36,6 @@ identify_boot_mode() {
 		androidboot.mode=*)
 			android_bootmode=${x#*=}
 			;;
-		skip_initramfs)
-			skip_initramfs="y"
 		esac
 	done
 
@@ -45,9 +43,31 @@ identify_boot_mode() {
 		BOOT_MODE="android"
 	fi
 
-	# System-as-root device
-	if [ -f /ramdisk-recovery.img ] && [ -z "$skip_initramfs" ]; then
-		BOOT_MODE="recovery"
+	## Some devices may be using 'bootreason', others 'boot_reason'
+	## XXX: Find a better way to handle device specifics here
+
+	# Krillin
+	if [ -f /sys/class/BOOT/BOOT/boot/boot_mode ]; then
+		boot_reason=$(cat /sys/class/BOOT/BOOT/boot/boot_mode)
+		case "${boot_reason}" in
+		1) BOOT_MODE="android" ;; # Meta
+		4) BOOT_MODE="android" ;; # Factory
+		8) BOOT_MODE="android" ;; # Power off charging
+		9) BOOT_MODE="android" ;; # Low power charging
+		esac
+	fi
+
+	# On Android 8+ devices the 'android' boot mode is broken and should be avoided.
+	# This behavior can be overridden with the cmdline flag 'halium_no_avoid_android_mode'
+	# List of API levels and referred Android versions: https://source.android.com/setup/start/build-numbers
+	if ! grep -wq halium_no_avoid_android_mode /proc/cmdline; then
+		api_level=$(sed -n 's/^ro.build.version.sdk=//p' /android-system/build.prop) # e.g. 26 for Android 8.0
+		[ -z "$api_level" ] && api_level=0
+		tell_kmsg "Android system image API level is $api_level"
+		if [ "$BOOT_MODE" = "android" ] && [ $api_level -ge 26 ]; then
+			tell_kmsg "Android 8+ device detected! Charging is to be handled by rootfs, continue boot normally"
+			BOOT_MODE='halium'
+		fi
 	fi
 
 	tell_kmsg "boot mode: $BOOT_MODE"
@@ -349,12 +369,22 @@ process_bind_mounts() {
 				sync_dirs $dstpath . $srcpath
 			fi
 
-			# Write the fstab entry
 			if [ "$5" = "none" ]; then
-				echo "$path $1 none bind 0 0" >>$FSTAB
+				mount_opts="bind"
 			else
-				echo "$path $1 none bind,$5 0 0" >>$FSTAB
+				mount_opts="bind,$5"
 			fi
+
+			# mount all /etc dirs right now, not later when fstab is
+			# processed, as it will cause races (e.g. /etc/machine-id).
+			case "$1" in
+				/etc/*)
+					mount -o "$mount_opts" "$srcpath" "$dstpath"
+					;;
+				*)
+					echo "$path $1 none $mount_opts 0 0" >>$FSTAB
+					;;
+			esac
 		else
 			continue
 		fi
@@ -467,28 +497,7 @@ mountroot() {
 		done
 	fi
 
-	if [ -n "$_syspart" ] && [ ! -e "$_syspart" ]; then
-		# On systems with A/B partition layout, current slot is provided via cmdline parameter.
-		ab_slot_suffix=$(grep -o 'androidboot\.slot_suffix=..' /proc/cmdline |  cut -d "=" -f2)
-		if [ ! -z "$ab_slot_suffix" ]; then
-			tell_kmsg "A/B slot system detected! Slot suffix is $ab_slot_suffix"
-			_syspart="${_syspart}${ab_slot_suffix}"
-			tell_kmsg "system partition is at $_syspart"
-		fi
-	fi
-
-	identify_boot_mode
 	identify_file_layout
-
-	if [ "$BOOT_MODE" = "recovery" ]; then
-		tell_kmsg "Recovery boot mode for system-as-root devices"
-		mount -n -t tmpfs tmpfs ${rootmnt}
-		cd ${rootmnt}
-		cat /ramdisk-recovery.img | gzip -d | cpio -i
-		ln -s ../init ${rootmnt}/sbin/init
-		cd -
-		return 0
-	fi
 
 	# If both $imagefile and $_syspart are set, something is wrong. The strange
 	# output from this could be a clue in that situation.
@@ -553,6 +562,8 @@ mountroot() {
 
 	[ $ANDROID_IMAGE_MODE = "rootfs" ] && mount -o bind $MOUNT_LOCATION/system /android-system
 	[ $ANDROID_IMAGE_MODE = "system" ] && extract_android_ramdisk
+
+	identify_boot_mode
 
 	# Determine whether we should boot to rootfs or Android
 	if ([ -e $imagefile ] || [ -n "$_syspart" ]) && [ "$BOOT_MODE" = "android" ]; then
