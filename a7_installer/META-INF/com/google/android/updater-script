@@ -1,0 +1,37 @@
+assert(is_substring("A520", getprop("ro.boot.bootloader")) || is_substring("A720", getprop("ro.boot.bootloader")) ||
+    abort("This device is not supported."););
+
+show_progress(1.000000, 0);
+    ui_print("#######################################");
+    ui_print("- Ubuntu Touch for Samsung Exynos7880 devices by Ayman ");
+    ui_print("- https://github.com/Exynos7880-Linux/samsung-exynos7880 ");
+    ui_print("#######################################");;
+
+set_progress(0.700000);
+    ui_print("- Cleaning old files");
+
+    delete_recursive("/data/android-data");
+    delete_recursive("/data/system-data");
+    delete_recursive("/data/user-data");
+    delete_recursive("/data/android-rootfs.img");
+    delete_recursive("/data/rootfs.img");
+
+set_progress(0.800000);
+    ui_print("- Flasing Halium Boot");
+    if is_substring("A720", getprop("ro.boot.bootloader")) then
+        ui_print("- A7 2017 detected");
+        package_extract_file("boot.img", "/dev/block/platform/13540000.dwmmc0/by-name/BOOT");
+        package_extract_file("recovery.img", "/dev/block/platform/13540000.dwmmc0/by-name/RECOVERY");
+    endif;
+
+set_progress(0.900000);
+    ui_print("- Extracting RootFS & Resizing to 8G ");
+    package_extract_dir("data", "/data");
+    package_extract_file("ubports.sh", "/tmp/ubports.sh");
+    set_perm(0, 0, 0777, "/tmp/ubports.sh");
+    run_program("/sbin/sh", "/tmp/ubports.sh");
+
+set_progress(1.000000);
+    ui_print(" ");
+    ui_print("- Installation finished.");
+    ui_print(" ");
