@@ -1,0 +1,14 @@
+[Unit]
+Description=Enable zram swap target
+ConditionPathExists=/dev/zram0
+DefaultDependencies=false
+Conflicts=shutdown.target
+After=zram.service
+Requires=zram.service
+
+[Swap]
+What=/dev/zram0
+Priority=100
+
+[Install]
+WantedBy=basic.target

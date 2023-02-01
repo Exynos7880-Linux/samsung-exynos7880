@@ -1,0 +1,77 @@
+name: Build Ubports Images
+
+on: 
+  push:
+    branches:
+      - master
+  release:
+    types: [published]
+
+jobs:
+
+  focal_build_a5:
+    runs-on: ubuntu-20.04
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@master
+
+    - name: Focal Build A5
+      run: |
+        set -x
+        sudo apt-get update
+        sudo apt install android-tools-mkbootimg build-essential ccache img2simg -y
+        sudo ln -sf python2.7 /usr/bin/python
+        ln -s deviceinfo-a5y17lte deviceinfo
+        sudo wget https://raw.githubusercontent.com/LineageOS/android_system_tools_mkbootimg/lineage-19.1/mkbootimg.py -O /usr/bin/mkbootimg
+        sudo chmod 755 /usr/bin/mkbootimg
+        mv ramdisk-recovery_a5.img ramdisk-recovery.img && rm ramdisk-recovery_a7.img
+        ./build.sh
+        ./build/prepare-fake-ota.sh out/device_a5y17lte.tar.xz ota
+        ./build/system-image-from-ota.sh ota/ubuntu_command out
+        ./flashable_zips.sh a5
+      shell: bash
+    - uses: marvinpinto/action-automatic-releases@latest
+      with:
+        repo_token: "${{ secrets.GITHUB_TOKEN }}"
+        automatic_release_tag: "${{ env.NOW }}"
+        prerelease: false
+        title: "${{ env.NOW }}"
+        files: |
+          ubports-a5y17lte-*.zip
+          out/boot.img
+          out/recovery.img
+          
+  focal_build_a7:
+    runs-on: ubuntu-20.04
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@master
+
+    - name: Focal Build A7
+      run: |
+        set -x
+        sudo apt-get update
+        sudo apt install android-tools-mkbootimg build-essential ccache img2simg -y
+        sudo ln -sf python2.7 /usr/bin/python
+        sudo wget https://raw.githubusercontent.com/LineageOS/android_system_tools_mkbootimg/lineage-19.1/mkbootimg.py -O /usr/bin/mkbootimg
+        sudo chmod 755 /usr/bin/mkbootimg
+        ln -s deviceinfo-a7y17lte deviceinfo
+        mv ramdisk-recovery_a7.img ramdisk-recovery.img && rm ramdisk-recovery_a5.img
+        ./build.sh
+        ./build/prepare-fake-ota.sh out/device_a7y17lte.tar.xz ota
+        ./build/system-image-from-ota.sh ota/ubuntu_command out
+        ./flashable_zips.sh a7
+      shell: bash
+    - uses: marvinpinto/action-automatic-releases@latest
+      with:
+        repo_token: "${{ secrets.GITHUB_TOKEN }}"
+        automatic_release_tag: "${{ env.NOW }}"
+        prerelease: false
+        title: "${{ env.NOW }}"
+        files: |
+          ubports-a7y17lte-*.zip
+          out/boot.img
+          out/recovery.img
+

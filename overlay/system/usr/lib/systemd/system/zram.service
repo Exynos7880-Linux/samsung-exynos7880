@@ -1,0 +1,14 @@
+[Unit]
+Description=Enable ZRAM
+DefaultDependencies=false
+Conflicts=shutdown.target
+After=local-fs.target
+Requires=local-fs.target
+
+[Service]
+Type=oneshot
+ExecStart=/usr/sbin/zramswapon
+RemainAfterExit=yes
+
+[Install]
+WantedBy=basic.target

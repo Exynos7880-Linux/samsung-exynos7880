@@ -1,0 +1,11 @@
+#!/bin/sh
+
+#zram devices
+NUM_ZRAM_DEV=1
+SIZE=1610612736
+num=0
+while [ "$num" -lt "$NUM_ZRAM_DEV" ]; do
+        echo $SIZE > /sys/block/zram${num}/disksize
+        /sbin/mkswap /dev/zram${num}
+        num=$(($num+1))
+done
