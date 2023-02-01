@@ -3,7 +3,7 @@ name: Build Ubports Images
 on: 
   push:
     branches:
-      - master
+      - focal
   release:
     types: [published]
 
