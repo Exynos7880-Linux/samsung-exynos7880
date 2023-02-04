@@ -14,4 +14,4 @@ mount -o bind /android/system/lib64/hw/audio.hidl_compat.default.so /android/ven
 # fix mtp,adb
 mount -o bind /dev/null /android/vendor/etc/init/init.samsungexynos7880.usb.rc
 # force hwc2
-mount -o bind /dev/null /vendor/lib64/hw/hwcomposer.exynos5.so
+#mount -o bind /dev/null /vendor/lib64/hw/hwcomposer.exynos5.so
