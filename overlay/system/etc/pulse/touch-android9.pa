@@ -43,7 +43,7 @@ load-module module-switch-on-connect skip_abstract=yes
 .else
 ### Automatically load the Pulseaudio Droid
 load-module module-droid-card-28 rate=48000 voice_virtual_stream=true quirks=-output_deep_buffer
-load-module module-droid-hidl-28
+load-module module-droid-hidl
 .endif
 
 ### Automatically load the trust-store module
