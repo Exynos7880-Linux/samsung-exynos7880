@@ -4,6 +4,7 @@ assert(is_substring("A520", getprop("ro.boot.bootloader")) ||
 show_progress(1.000000, 0);
     ui_print("#######################################");
     ui_print("- Ubuntu Touch for Samsung Exynos7880 devices by Ayman ");
+    ui_print("- Thanks jimmy for testing ");
     ui_print("- https://github.com/Exynos7880-Linux/samsung-exynos7880 ");
     ui_print("#######################################");;
 
