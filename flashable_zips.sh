@@ -6,7 +6,8 @@ make_zips () {
         mv out/rootfs.img ${1}_installer/data/ubuntu.img
         cp out/boot.img ${1}_installer/boot.img
         cp out/recovery.img ${1}_installer/recovery.img
-	wget https://cytranet.dl.sourceforge.net/project/exynos7880/vendor/vendor.img -O ${1}_installer/data/vendor.img
+        mkdir -p var/lib/lxc/android/
+	wget https://cytranet.dl.sourceforge.net/project/exynos7880/vendor/vendor.img -O var/lib/lxc/android/vendor.img
         if [ "$1" == "a7" ]; then
 	   sudo ./prep_vendor.sh a7
 	fi
