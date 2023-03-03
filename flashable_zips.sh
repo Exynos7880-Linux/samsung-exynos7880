@@ -13,7 +13,7 @@ make_zips () {
 	fi
 	cd ${1}_installer
         zip -r -y -9 ../ubports-${1}y17lte-devel-`date +%Y%m%d`.zip .
-        sed -i '24d' META-INF/com/google/android/updater-script
+        sed -i '25d' META-INF/com/google/android/updater-script
         rm recovery.img
         zip -r -y -9 ../ubports-${1}y17lte-devel-norecovery-`date +%Y%m%d`.zip .
         echo "NOW=$(date +'%Y.%m.%d'-${1}y17lte)" >> $GITHUB_ENV
