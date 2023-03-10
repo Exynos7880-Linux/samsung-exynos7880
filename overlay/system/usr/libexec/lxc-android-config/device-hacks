@@ -14,6 +14,6 @@ mount -o bind /android/system/lib64/hw/audio.hidl_compat.default.so /android/ven
 # fix mtp,adb
 mount -o bind /dev/null /android/vendor/etc/init/init.samsungexynos7880.usb.rc
 # disable wifi hal
-#mount -o bind /dev/null /android/vendor/etc/init/android.hardware.wifi@1.0-service.rc
-#mount -o bind /dev/null /android/vendor/etc/init/vendor.samsung.hardware.wifi@2.0-service
+mount -o bind /dev/null /android/vendor/etc/init/android.hardware.wifi@1.0-service.rc
+mount -o bind /dev/null /android/vendor/etc/init/vendor.samsung.hardware.wifi@2.0-service
 
