@@ -3,3 +3,5 @@ a7y17lte:
   DeviceType: phone
   DoubleTapToWake:
     - /sys/class/sec/tsp/dt2w_enable|1|0
+  MirAndroidPlatformServerPartialUpdates:
+    - true
