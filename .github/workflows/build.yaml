@@ -90,7 +90,7 @@ jobs:
         sudo ln -sf python2.7 /usr/bin/python
         sudo wget https://raw.githubusercontent.com/LineageOS/android_system_tools_mkbootimg/lineage-19.1/mkbootimg.py -O /usr/bin/mkbootimg
         sudo chmod 755 /usr/bin/mkbootimg
-        ln -s deviceinfo-a7y17lte-droidian deviceinfo
+        ln -s deviceinfo-a5y17lte-droidian deviceinfo
         ./build.sh
         echo "NOW=$(date +'%Y.%m.%d'-a5y17lte-droidian)" >> $GITHUB_ENV
       shell: bash
