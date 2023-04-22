@@ -86,7 +86,7 @@ jobs:
       run: |
         set -x
         sudo apt-get update
-        sudo apt install android-tools-mkbootimg build-essential ccache img2simg debootstrap qemu-user-static binfmt-support dpkg-dev -y
+        sudo apt install android-tools-mkbootimg build-essential ccache img2simg -y
         sudo ln -sf python2.7 /usr/bin/python
         sudo wget https://raw.githubusercontent.com/LineageOS/android_system_tools_mkbootimg/lineage-19.1/mkbootimg.py -O /usr/bin/mkbootimg
         sudo chmod 755 /usr/bin/mkbootimg
@@ -115,7 +115,7 @@ jobs:
       run: |
         set -x
         sudo apt-get update
-        sudo apt install android-tools-mkbootimg build-essential ccache img2simg debootstrap qemu-user-static binfmt-support dpkg-dev -y
+        sudo apt install android-tools-mkbootimg build-essential ccache img2simg -y
         sudo ln -sf python2.7 /usr/bin/python
         sudo wget https://raw.githubusercontent.com/LineageOS/android_system_tools_mkbootimg/lineage-19.1/mkbootimg.py -O /usr/bin/mkbootimg
         sudo chmod 755 /usr/bin/mkbootimg
